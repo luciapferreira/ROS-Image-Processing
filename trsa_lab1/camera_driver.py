@@ -15,7 +15,7 @@ class CameraPublisher(Node):
 
         # Use Mov Instead
         calibration_path = os.path.join(
-            ament_index_python.get_package_share_directory('trsa_lab1'), 'video','test.mov')
+            ament_index_python.get_package_share_directory('trsa_lab1'), 'video','test1.mov')
         self.cap = cv2.VideoCapture(calibration_path)
 
         self.bridge = CvBridge()
