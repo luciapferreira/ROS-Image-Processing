@@ -27,23 +27,21 @@ class ObjectDetection(Node):
         cv_image_rect = self.bridge.imgmsg_to_cv2(image_rect)
         cv_image_processed = self.bridge.imgmsg_to_cv2(image_processed)
 
-        # Detecting and Creating Contours
-        dilated = cv2.dilate(cv_image_processed, None, iterations=0)
+        # Creating Contours
         contours, hierarchy = cv2.findContours(cv_image_processed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        # Filter Contours
-        min_contour_area = 500  # Define your minimum area threshold
-        filter_contours = [cnt for cnt in contours if cv2.contourArea(cnt) > min_contour_area]
-
-        # Set minimum size threshold for bounding boxes
-        min_width, min_height = 50, 50
+        # Set minimum and maximum size threshold for bounding boxes
+        min_width, min_height = 250, 160
+        max_width, max_height = 700, 700
 
         # Draw Bounding Boxes
         cv_image_object=cv_image_rect.copy()
-        for cnt in filter_contours:
+        for cnt in contours:
             x, y, w, h = cv2.boundingRect(cnt)
-            if w > min_width and h > min_height:
+            if min_width < w < max_width and min_height < h < max_height:
                 cv_image_object = cv2.rectangle(cv_image_object, (x, y), (x+w, y+h), (0, 0, 255), 3)
+                text = f"{w}x{h}"
+                cv2.putText(cv_image_object, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
  
 
         # Display the resulting frame
