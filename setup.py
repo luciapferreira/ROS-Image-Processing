@@ -15,6 +15,7 @@ setup(
         (os.path.join('share', package_name, 'video'), glob('video/*.mov')),
         (os.path.join('share', package_name, 'calibration/images'), glob('calibration/images/*')),
         (os.path.join('share', package_name, 'calibration'), glob(os.path.join('calibration', '*ost.[pxy][yma]*'))),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
