@@ -30,6 +30,13 @@ class CameraReader(Node):
             10
         )
 
+        self.sub_image_object = self.create_subscription(
+            Image, 
+            '/camera/object_detection', 
+            self.camera_reader_object_callback, 
+            10
+        )
+
     def camera_reader_raw_callback(self, msg):
         cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
         cv2.imshow("Camera Raw Feed", cv_image)
@@ -44,6 +51,15 @@ class CameraReader(Node):
         cv_image = self.bridge.imgmsg_to_cv2(msg)
         cv2.imshow("Camera Processed Feed", cv_image)
         cv2.waitKey(3)
+
+    def camera_reader_object_callback(self, msg):
+        #self.get_logger().info('Image frame received')
+
+        cv_image = self.bridge.imgmsg_to_cv2(msg)
+
+        cv2.imshow('Object Detected', cv_image)  
+        cv2.waitKey(3)
+
 
 
 def main(args=None):

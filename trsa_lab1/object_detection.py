@@ -41,12 +41,7 @@ class ObjectDetection(Node):
             if min_width < w < max_width and min_height < h < max_height:
                 cv_image_object = cv2.rectangle(cv_image_object, (x, y), (x+w, y+h), (0, 0, 255), 3)
                 text = f"{w}x{h}"
-                cv2.putText(cv_image_object, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
- 
-
-        # Display the resulting frame
-        cv2.imshow('Object Detected', cv_image_object)  
-        cv2.waitKey(3)   
+                cv2.putText(cv_image_object, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)   
 
         self.pub_object_detection.publish(self.bridge.cv2_to_imgmsg(cv_image_object))
         
