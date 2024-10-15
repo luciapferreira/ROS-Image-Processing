@@ -14,6 +14,11 @@ class ObjectDetection(Node):
     def __init__(self):
         super().__init__('object_detection')
 
+        self.declare_parameter('min_width', 250)
+        self.declare_parameter('min_height', 160)
+        self.declare_parameter('max_width', 700)
+        self.declare_parameter('max_height', 700)
+
         self.bridge = CvBridge()
         self.sub_image_rect = Subscriber(self, Image, '/camera/image_rect')
         self.sub_image_processed = Subscriber(self, Image, '/camera/image_processed')
@@ -30,9 +35,11 @@ class ObjectDetection(Node):
         # Creating Contours
         contours, hierarchy = cv2.findContours(cv_image_processed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        # Set minimum and maximum size threshold for bounding boxes
-        min_width, min_height = 250, 160
-        max_width, max_height = 700, 700
+        # Set minimum and maximum size parameters for bounding boxes
+        min_width = self.get_parameter('min_width').get_parameter_value().integer_value
+        min_height = self.get_parameter('min_height').get_parameter_value().integer_value
+        max_width = self.get_parameter('max_width').get_parameter_value().integer_value
+        max_height = self.get_parameter('max_height').get_parameter_value().integer_value
 
         # Draw Bounding Boxes
         cv_image_object=cv_image_rect.copy()

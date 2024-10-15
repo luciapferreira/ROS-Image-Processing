@@ -11,6 +11,12 @@ def generate_launch_description():
 
    max_kernel_length = LaunchConfiguration('max_kernel_length')
    max_kernel_gaussian = LaunchConfiguration('max_kernel_gaussian')
+
+   # Set minimum and maximum size parameters for bounding boxes
+   min_width = LaunchConfiguration('min_width')
+   min_height = LaunchConfiguration('min_height')
+   max_width = LaunchConfiguration('max_width')
+   max_height = LaunchConfiguration('max_height')
     
    return LaunchDescription([
       
@@ -36,10 +42,31 @@ def generate_launch_description():
         default_value='2',
         description='OpenCV Kernel Lengh for Dilate/Erode'
     ),
-        DeclareLaunchArgument(
+    DeclareLaunchArgument(
         'max_kernel_gaussian',
         default_value='21',
         description='OpenCV Kernel Lengh for Gaussian Blur'
+    ),
+
+    DeclareLaunchArgument(
+        'min_width',
+        default_value='250',
+        description='Bounding Boxes Min Width'
+    ),
+    DeclareLaunchArgument(
+        'min_height',
+        default_value='160',
+        description='Bounding Boxes Min Height'
+    ),
+    DeclareLaunchArgument(
+        'max_width',
+        default_value='700',
+        description='Bounding Boxes Max Width'
+    ),
+    DeclareLaunchArgument(
+        'max_height',
+        default_value='700',
+        description='Bounding Boxes Max Height'
     ),
 
     Node(
@@ -73,7 +100,13 @@ def generate_launch_description():
         package='trsa_lab1',
         executable='object_detection',
         output='screen',
-        name='object_detection'
+        name='object_detection',
+        parameters=[
+            {'min_width': min_width},
+            {'min_height': min_height},
+            {'max_width': max_width},
+            {'max_height': max_height}
+        ]
     ),
     Node(
         package='trsa_lab1',
