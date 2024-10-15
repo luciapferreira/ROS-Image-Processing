@@ -10,13 +10,16 @@ class CameraPublisher(Node):
 
     def __init__(self):
         super().__init__('camera_publisher')
-        # Intialize camera0 (/dev/video0 by default) 
-        #self.cap = cv2.VideoCapture(0)
 
-        # Use Mov Instead
-        calibration_path = os.path.join(
-            ament_index_python.get_package_share_directory('trsa_lab1'), 'video','test1.mov')
-        self.cap = cv2.VideoCapture(calibration_path)
+        self.declare_parameter('camera_type', '0')
+        camera_type = self.get_parameter('camera_type').get_parameter_value().string_value
+
+        if camera_type.isdigit():
+            self.cap = cv2.VideoCapture(int(camera_type))
+        else:
+            video_path = os.path.join(
+                ament_index_python.get_package_share_directory('trsa_lab1'), 'video', camera_type)
+            self.cap = cv2.VideoCapture(video_path)
 
         self.bridge = CvBridge()
         # Create the publisher camera0 to /camera/image_raw
