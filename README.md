@@ -1,1 +1,1 @@
-# TRSA-img-processing
+# 2D Image Processing with ROS and OpenCV
